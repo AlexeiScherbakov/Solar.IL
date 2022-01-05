@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\Solar.IL.Tests\FlagEnumUtilTest.cs" Link="FlagEnumUtilTest.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="NUnit" Version="3.13.2" />
+		<PackageReference Include="NUnit3TestAdapter" Version="4.2.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="Solar.IL">
+			<HintPath>..\..\src\Solar.IL\bin\Release\netcoreapp3.1\Solar.IL.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+</Project>

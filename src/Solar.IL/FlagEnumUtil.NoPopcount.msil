@@ -1,0 +1,135 @@
+.class public abstract sealed auto ansi beforefieldinit
+    Solar.FlagEnumUtil
+        extends [CORE_ASSEMBLY]System.Object
+{
+    .method private hidebysig static int32
+        PopcountFallback(
+            unsigned int32 'value'
+        ) cil managed
+    {
+        .maxstack 8
+        ldarg.0
+        ldarg.0
+        ldc.i4.1
+        shr.un
+        ldc.i4       1431655765 // 0x55555555
+        and
+        sub
+        starg.s      'value'
+
+        ldarg.0
+        ldc.i4       858993459 // 0x33333333
+        and
+        ldarg.0
+        ldc.i4.2
+        shr.un
+        ldc.i4       858993459 // 0x33333333
+        and
+        add
+        starg.s      'value'
+
+        ldarg.0
+        ldarg.0
+        ldc.i4.4
+        shr.un
+        add
+        ldc.i4       252645135 // 0x0f0f0f0f
+        and
+        ldc.i4       16843009 // 0x01010101
+        mul
+        ldc.i4.s     24 // 0x18
+        shr.un
+        starg.s      'value'
+        ldarg.0
+        ret
+    }
+
+    .method private hidebysig static int32
+        PopcountFallback(
+            unsigned int64 'value'
+        ) cil managed
+    {
+        .maxstack 3
+
+        ldarg.0
+        ldarg.0
+        ldc.i4.1
+        shr.un
+        ldc.i8       6148914691236517205 // 0x5555555555555555
+        and
+        sub
+        starg.s      'value'
+
+        ldarg.0
+        ldc.i8       3689348814741910323 // 0x3333333333333333
+        and
+        ldarg.0
+        ldc.i4.2
+        shr.un
+        ldc.i8       3689348814741910323 // 0x3333333333333333
+        and
+        add
+        starg.s      'value'
+
+        ldarg.0
+        ldarg.0
+        ldc.i4.4
+        shr.un
+        add
+        ldc.i8       1085102592571150095 // 0x0f0f0f0f0f0f0f0f
+        and
+        ldc.i8       72340172838076673 // 0x0101010101010101
+        mul
+        ldc.i4.s     56 // 0x38
+        shr.un
+        starg.s      'value'
+
+        ldarg.0
+        conv.i4
+        ret
+    }
+
+    .method public hidebysig static int32
+        FlagCount<valuetype .ctor (class [CORE_ASSEMBLY]System.Enum, class [CORE_ASSEMBLY]System.ValueType) TEnum>(
+            !!0/*TEnum*/ this
+        ) cil managed
+    {
+        .custom instance void [CORE_ASSEMBLY]System.Runtime.CompilerServices.ExtensionAttribute::.ctor()
+         = (01 00 00 00 )
+        .maxstack 8
+        .locals init (
+            [0] int32 size
+            )
+        sizeof !!0
+        stloc.0
+        ldloc.0
+        ldc.i4.1
+        sub
+        switch (byte_branch,short_branch,invalid_branch,int_branch)
+        ldloc.0
+        ldc.i4.8
+        beq.s long_branch
+invalid_branch:
+        ldc.i4.m1
+        ret
+byte_branch: 
+        ldarg.0       
+        conv.u1
+        call    int32 Solar.FlagEnumUtil::PopcountFallback(unsigned int32)
+        ret
+short_branch:
+        ldarg.0
+        conv.u2
+        call    int32 Solar.FlagEnumUtil::PopcountFallback(unsigned int32)
+        ret
+int_branch:
+        ldarg.0
+        call    int32 Solar.FlagEnumUtil::PopcountFallback(unsigned int32)
+        ret
+long_branch:
+        ldarg.0
+        conv.u8
+        call    int32 Solar.FlagEnumUtil::PopcountFallback(unsigned int64)
+        ret
+    }
+}
