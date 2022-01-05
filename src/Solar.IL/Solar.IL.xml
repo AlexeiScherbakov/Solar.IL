@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Solar.IL</name>
+    </assembly>
+    <members>
+        <member name="M:Solar.FlagEnumUtil.Or``1(``0,``0)">
+            <summary>
+            Performs bitwise OR "|" operation to enum variables
+            </summary>
+            <typeparam name="TEnum">Flags enum type</typeparam>
+            <param name="this"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Solar.FlagEnumUtil.And``1(``0,``0)">
+            <summary>
+            Performs bitwise AND operation to enum variables
+            </summary>
+            <typeparam name="TEnum">Flags enum type</typeparam>
+            <param name="this"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Solar.FlagEnumUtil.ClearFlags``1(``0,``0)">
+            <summary>
+            Removes <paramref name="value"/> flags from <paramref name="this"/>
+            </summary>
+            <typeparam name="TEnum">Flags enum type</typeparam>
+            <param name="this"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

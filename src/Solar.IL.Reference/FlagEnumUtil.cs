@@ -6,24 +6,49 @@ namespace Solar
 {
 	public static class FlagEnumUtil
 	{
+		/// <summary>
+		/// Combines two flag enum varibles
+		/// </summary>
+		/// <param name="this"></param>
+		/// <param name="value"></param>
+		/// <returns></returns>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int OrInt(this int @this, int value)
 		{
 			return @this | value;
 		}
 
+		/// <summary>
+		/// Performs bitwise AND operation to enum variables
+		/// </summary>
+		/// <param name="this"></param>
+		/// <param name="value"></param>
+		/// <returns></returns>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int AndInit(this int @this,int value)
 		{
 			return @this & value;
 		}
 
+		/// <summary>
+		/// Removes <paramref name="value"/> flags from <paramref name="this"/>
+		/// </summary>
+		/// <param name="this"></param>
+		/// <param name="value"></param>
+		/// <returns></returns>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int ClearFlags(this int @this,int value)
 		{
 			return @this & (~value);
 		}
 
+		/// <summary>
+		/// Performs bitwise OR "|" operation to enum variables
+		/// </summary>
+		/// <typeparam name="TEnum">Flags enum type</typeparam>
+		/// <param name="this"></param>
+		/// <param name="value"></param>
+		/// <returns></returns>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static TEnum OrEnum<TEnum>(this TEnum @this, TEnum value)
 			where TEnum : struct, Enum
