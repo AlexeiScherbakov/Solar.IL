@@ -16,7 +16,7 @@
 
 	<ItemGroup>
 		<Reference Include="Solar.IL">
-			<HintPath>..\..\src\Solar.IL\bin\Release\net48\Solar.IL.dll</HintPath>
+			<HintPath>..\..\src\Solar.IL\bin\Release\netstandard2.0\Solar.IL.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 

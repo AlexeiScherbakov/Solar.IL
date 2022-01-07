@@ -4,82 +4,8 @@ using NUnit.Framework;
 
 namespace Solar.IL.Tests
 {
-	public class FlagEnumUtilTest
+	public partial class FlagEnumUtilTest
 	{
-
-		[Test]
-		public void ByteEnumTests()
-		{
-			ByteEnum value = ByteEnum.Bit0 | ByteEnum.Bit4;
-			value = value.Or(ByteEnum.Bit7);
-			Assert.AreEqual(ByteEnum.Bit0 | ByteEnum.Bit4 | ByteEnum.Bit7, value);
-			value = value.Or(ByteEnum.Bit0);
-			Assert.AreEqual(ByteEnum.Bit0 | ByteEnum.Bit4 | ByteEnum.Bit7, value);
-			value = value.Or(ByteEnum.Bit1);
-			Assert.AreNotEqual(ByteEnum.Bit0 | ByteEnum.Bit4 | ByteEnum.Bit7, value);
-		}
-
-		[Test]
-		public void SByteEnumTests()
-		{
-			SByteEnum value = SByteEnum.Bit0 | SByteEnum.Bit4;
-			value = value.Or(SByteEnum.Bit7);
-			Assert.AreEqual(SByteEnum.Bit0 | SByteEnum.Bit4 | SByteEnum.Bit7, value);
-			value = value.Or(SByteEnum.Bit0);
-			Assert.AreEqual(SByteEnum.Bit0 | SByteEnum.Bit4 | SByteEnum.Bit7, value);
-			value = value.Or(SByteEnum.Bit1);
-			Assert.AreNotEqual(SByteEnum.Bit0 | SByteEnum.Bit4 | SByteEnum.Bit7, value);
-		}
-
-		[Test]
-		public void UInt16EnumTests()
-		{
-			UShortEnum value = UShortEnum.Bit0 | UShortEnum.Bit4;
-			value = value.Or(UShortEnum.Bit15);
-			Assert.AreEqual(UShortEnum.Bit0 | UShortEnum.Bit4 | UShortEnum.Bit15, value);
-			value = value.Or(UShortEnum.Bit0);
-			Assert.AreEqual(UShortEnum.Bit0 | UShortEnum.Bit4 | UShortEnum.Bit15, value);
-			value = value.Or(UShortEnum.Bit1);
-			Assert.AreNotEqual(UShortEnum.Bit0 | UShortEnum.Bit4 | UShortEnum.Bit15, value);
-		}
-
-		[Test]
-		public void Int16EnumTests()
-		{
-			ShortEnum value = ShortEnum.Bit0 | ShortEnum.Bit4;
-			value = value.Or(ShortEnum.Bit15);
-			Assert.AreEqual(ShortEnum.Bit0 | ShortEnum.Bit4 | ShortEnum.Bit15, value);
-			value = value.Or(ShortEnum.Bit0);
-			Assert.AreEqual(ShortEnum.Bit0 | ShortEnum.Bit4 | ShortEnum.Bit15, value);
-			value = value.Or(ShortEnum.Bit1);
-			Assert.AreNotEqual(ShortEnum.Bit0 | ShortEnum.Bit4 | ShortEnum.Bit15, value);
-		}
-
-		[Test]
-		public void UInt32EnumTests()
-		{
-			UIntEnum value = UIntEnum.Bit0 | UIntEnum.Bit4;
-			value = value.Or(UIntEnum.Bit31);
-			Assert.AreEqual(UIntEnum.Bit0 | UIntEnum.Bit4 | UIntEnum.Bit31, value);
-			value = value.Or(UIntEnum.Bit0);
-			Assert.AreEqual(UIntEnum.Bit0 | UIntEnum.Bit4 | UIntEnum.Bit31, value);
-			value = value.Or(UIntEnum.Bit1);
-			Assert.AreNotEqual(UIntEnum.Bit0 | UIntEnum.Bit4 | UIntEnum.Bit31, value);
-		}
-
-		[Test]
-		public void Int32EnumTests()
-		{
-			IntEnum value = IntEnum.Bit0 | IntEnum.Bit4;
-			value = value.Or(IntEnum.Bit31);
-			Assert.AreEqual(IntEnum.Bit0 | IntEnum.Bit4 | IntEnum.Bit31, value);
-			value = value.Or(IntEnum.Bit0);
-			Assert.AreEqual(IntEnum.Bit0 | IntEnum.Bit4 | IntEnum.Bit31, value);
-			value = value.Or(IntEnum.Bit1);
-			Assert.AreNotEqual(IntEnum.Bit0 | IntEnum.Bit4 | IntEnum.Bit31, value);
-		}
-
-
 		[Test]
 		public void TopFlagCountTest()
 		{
@@ -153,7 +79,663 @@ namespace Solar.IL.Tests
 			}
 		}
 	}
+}
 
+
+// ByteEnum
+namespace Solar.IL.Tests
+{
+	using static Solar.IL.Tests.ByteEnum;
+
+	using TestCase = TestCase<ByteEnum>;
+	using UnaryTestCase = UnaryTestCase<ByteEnum>;
+
+	partial class FlagEnumUtilTest
+	{
+		[Test]
+		public void ByteEnumOrTests()
+		{
+			TestCase orCase = new()
+			{
+				Initial = Bit0 | Bit4,
+				Phase1 = Bit7,
+				Phase1Result = Bit0 | Bit4 | Bit7,
+				Phase2 = Bit0,
+				Phase2Result = Bit0 | Bit4 | Bit7,
+				Phase3 = Bit1,
+				Phase3Result = Bit0 | Bit1 | Bit4 | Bit7,
+				InvalidPhase3Result = Bit0 | Bit4 | Bit7
+			};
+
+			orCase.Process((x, y) => x.Or(y));
+		}
+
+		[Test]
+		public void ByteEnumAndTests()
+		{
+			TestCase andCase = new()
+			{
+				Initial = Bit0 | Bit1 | Bit6 | Bit7,
+				Phase1 = Bit0 | Bit1 | Bit6,
+				Phase1Result = Bit0 | Bit1 | Bit6,
+				Phase2 = Bit0 | Bit1,
+				Phase2Result = Bit0 | Bit1,
+				Phase3 = Bit0,
+				Phase3Result = Bit0,
+				InvalidPhase3Result = Bit0 | Bit1
+			};
+
+			andCase.Process((x, y) => x.And(y));
+		}
+
+		[Test]
+		public void ByteEnumXorTests()
+		{
+			TestCase xorCase = new()
+			{
+				Initial = Bit0 | Bit1 | Bit6 | Bit7,
+				Phase1 = Bit0 | Bit1 | Bit6,
+				Phase1Result = Bit7,
+				Phase2 = Bit0 | Bit1,
+				Phase2Result = Bit0 | Bit1 | Bit7,
+				Phase3 = Bit0,
+				Phase3Result = Bit1 | Bit7,
+				InvalidPhase3Result = Bit0 | Bit1 | Bit7,
+			};
+
+			xorCase.Process((x, y) => x.Xor(y));
+		}
+
+		[Test]
+		public void ByteEnumNotTests()
+		{
+			UnaryTestCase notCase = new()
+			{
+				Initial = Bit0 | Bit7,
+				Phase1Result = Bit1 | Bit2 | Bit3 | Bit4 | Bit5 | Bit6,
+				Phase2Result = Bit0 | Bit7
+			};
+
+			notCase.Process(x => x.Not());
+		}
+	}
+}
+
+// SByteEnum
+namespace Solar.IL.Tests
+{
+	using static Solar.IL.Tests.SByteEnum;
+
+	using TestCase = TestCase<SByteEnum>;
+	using UnaryTestCase = UnaryTestCase<SByteEnum>;
+
+	partial class FlagEnumUtilTest
+	{
+		[Test]
+		public void SByteEnumOrTests()
+		{
+			TestCase orCase = new()
+			{
+				Initial = Bit0 | Bit4,
+				Phase1 = Bit7,
+				Phase1Result = Bit0 | Bit4 | Bit7,
+				Phase2 = Bit0,
+				Phase2Result = Bit0 | Bit4 | Bit7,
+				Phase3 = Bit1,
+				Phase3Result = Bit0 | Bit1 | Bit4 | Bit7,
+				InvalidPhase3Result = Bit0 | Bit4 | Bit7
+			};
+
+			orCase.Process((x, y) => x.Or(y));
+		}
+
+		[Test]
+		public void SByteEnumAndTests()
+		{
+			TestCase andCase = new()
+			{
+				Initial = Bit0 | Bit1 | Bit6 | Bit7,
+				Phase1 = Bit0 | Bit1 | Bit6,
+				Phase1Result = Bit0 | Bit1 | Bit6,
+				Phase2 = Bit0 | Bit1,
+				Phase2Result = Bit0 | Bit1,
+				Phase3 = Bit0,
+				Phase3Result = Bit0,
+				InvalidPhase3Result = Bit0 | Bit1
+			};
+
+			andCase.Process((x, y) => x.And(y));
+		}
+
+		[Test]
+		public void SByteEnumXorTests()
+		{
+			TestCase xorCase = new()
+			{
+				Initial = Bit0 | Bit1 | Bit6 | Bit7,
+				Phase1 = Bit0 | Bit1 | Bit6,
+				Phase1Result = Bit7,
+				Phase2 = Bit0 | Bit1,
+				Phase2Result = Bit0 | Bit1 | Bit7,
+				Phase3 = Bit0,
+				Phase3Result = Bit1 | Bit7,
+				InvalidPhase3Result = Bit0 | Bit1 | Bit7,
+			};
+
+			xorCase.Process((x, y) => x.Xor(y));
+		}
+
+		[Test]
+		public void SByteEnumNotTests()
+		{
+			UnaryTestCase notCase = new()
+			{
+				Initial = Bit0 | Bit7,
+				Phase1Result = Bit1 | Bit2 | Bit3 | Bit4 | Bit5 | Bit6,
+				Phase2Result = Bit0 | Bit7
+			};
+
+			notCase.Process(x => x.Not());
+		}
+	}
+}
+
+// UShortEnum
+namespace Solar.IL.Tests
+{
+	using static Solar.IL.Tests.UShortEnum;
+
+	using TestCase = TestCase<UShortEnum>;
+	using UnaryTestCase = UnaryTestCase<UShortEnum>;
+
+	partial class FlagEnumUtilTest
+	{
+		[Test]
+		public void UShortEnumOrTests()
+		{
+			TestCase orCase = new()
+			{
+				Initial = Bit0 | Bit4,
+				Phase1 = Bit15,
+				Phase1Result = Bit0 | Bit4 | Bit15,
+				Phase2 = Bit0,
+				Phase2Result = Bit0 | Bit4 | Bit15,
+				Phase3 = Bit1,
+				Phase3Result = Bit0 | Bit1 | Bit4 | Bit15,
+				InvalidPhase3Result = Bit0 | Bit4 | Bit15
+			};
+
+			orCase.Process((x, y) => x.Or(y));
+		}
+
+		[Test]
+		public void UShortEnumAndTests()
+		{
+			TestCase andCase = new()
+			{
+				Initial = Bit0 | Bit1 | Bit6 | Bit15,
+				Phase1 = Bit0 | Bit1 | Bit6,
+				Phase1Result = Bit0 | Bit1 | Bit6,
+				Phase2 = Bit0 | Bit1,
+				Phase2Result = Bit0 | Bit1,
+				Phase3 = Bit0,
+				Phase3Result = Bit0,
+				InvalidPhase3Result = Bit0 | Bit1
+			};
+
+			andCase.Process((x, y) => x.And(y));
+		}
+
+		[Test]
+		public void UShortEnumXorTests()
+		{
+			TestCase xorCase = new()
+			{
+				Initial = Bit0 | Bit1 | Bit6 | Bit15,
+				Phase1 = Bit0 | Bit1 | Bit6,
+				Phase1Result = Bit15,
+				Phase2 = Bit0 | Bit1,
+				Phase2Result = Bit0 | Bit1 | Bit15,
+				Phase3 = Bit0,
+				Phase3Result = Bit1 | Bit15,
+				InvalidPhase3Result = Bit0 | Bit1 | Bit15,
+			};
+
+			xorCase.Process((x, y) => x.Xor(y));
+		}
+
+		[Test]
+		public void UShortEnumNotTests()
+		{
+			UnaryTestCase notCase = new()
+			{
+				Initial = Bit0 | Bit1 | Bit7 | Bit14 | Bit15,
+				Phase1Result = Bit2 | Bit3 | Bit4 | Bit5 | Bit6 | Bit8 | Bit9 | Bit10 | Bit11 | Bit12 | Bit13,
+				Phase2Result = Bit0 | Bit1 | Bit7 | Bit14 | Bit15,
+			};
+
+			notCase.Process(x => x.Not());
+		}
+	}
+
+}
+
+// ShortEnum
+namespace Solar.IL.Tests
+{
+	using static Solar.IL.Tests.ShortEnum;
+
+	using TestCase = TestCase<ShortEnum>;
+	using UnaryTestCase = UnaryTestCase<ShortEnum>;
+
+	partial class FlagEnumUtilTest
+	{
+		[Test]
+		public void ShortEnumOrTests()
+		{
+			TestCase orCase = new()
+			{
+				Initial = Bit0 | Bit4,
+				Phase1 = Bit15,
+				Phase1Result = Bit0 | Bit4 | Bit15,
+				Phase2 = Bit0,
+				Phase2Result = Bit0 | Bit4 | Bit15,
+				Phase3 = Bit1,
+				Phase3Result = Bit0 | Bit1 | Bit4 | Bit15,
+				InvalidPhase3Result = Bit0 | Bit4 | Bit15
+			};
+
+			orCase.Process((x, y) => x.Or(y));
+		}
+
+		[Test]
+		public void ShortEnumAndTests()
+		{
+			TestCase andCase = new()
+			{
+				Initial = Bit0 | Bit1 | Bit6 | Bit15,
+				Phase1 = Bit0 | Bit1 | Bit6,
+				Phase1Result = Bit0 | Bit1 | Bit6,
+				Phase2 = Bit0 | Bit1,
+				Phase2Result = Bit0 | Bit1,
+				Phase3 = Bit0,
+				Phase3Result = Bit0,
+				InvalidPhase3Result = Bit0 | Bit1
+			};
+
+			andCase.Process((x, y) => x.And(y));
+		}
+
+		[Test]
+		public void ShortEnumXorTests()
+		{
+			TestCase xorCase = new()
+			{
+				Initial = Bit0 | Bit1 | Bit6 | Bit15,
+				Phase1 = Bit0 | Bit1 | Bit6,
+				Phase1Result = Bit15,
+				Phase2 = Bit0 | Bit1,
+				Phase2Result = Bit0 | Bit1 | Bit15,
+				Phase3 = Bit0,
+				Phase3Result = Bit1 | Bit15,
+				InvalidPhase3Result = Bit0 | Bit1 | Bit15,
+			};
+
+			xorCase.Process((x, y) => x.Xor(y));
+		}
+
+		[Test]
+		public void ShortEnumNotTests()
+		{
+			UnaryTestCase notCase = new()
+			{
+				Initial = Bit0 | Bit1 | Bit7 | Bit14 | Bit15,
+				Phase1Result = Bit2 | Bit3 | Bit4 | Bit5 | Bit6 | Bit8 | Bit9 | Bit10 | Bit11 | Bit12 | Bit13,
+				Phase2Result = Bit0 | Bit1 | Bit7 | Bit14 | Bit15,
+			};
+
+			notCase.Process(x => x.Not());
+		}
+	}
+}
+
+// UIntEnum
+namespace Solar.IL.Tests
+{
+	using static Solar.IL.Tests.UIntEnum;
+
+	using TestCase = TestCase<UIntEnum>;
+	using UnaryTestCase = UnaryTestCase<UIntEnum>;
+
+	partial class FlagEnumUtilTest
+	{
+		[Test]
+		public void UIntEnumOrTests()
+		{
+			TestCase orCase = new()
+			{
+				Initial = Bit0 | Bit4,
+				Phase1 = Bit31,
+				Phase1Result = Bit0 | Bit4 | Bit31,
+				Phase2 = Bit0,
+				Phase2Result = Bit0 | Bit4 | Bit31,
+				Phase3 = Bit1,
+				Phase3Result = Bit0 | Bit1 | Bit4 | Bit31,
+				InvalidPhase3Result = Bit0 | Bit4 | Bit31
+			};
+
+			orCase.Process((x, y) => x.Or(y));
+		}
+
+		[Test]
+		public void UIntEnumAndTests()
+		{
+			TestCase andCase = new()
+			{
+				Initial = Bit0 | Bit1 | Bit6 | Bit31,
+				Phase1 = Bit0 | Bit1 | Bit6,
+				Phase1Result = Bit0 | Bit1 | Bit6,
+				Phase2 = Bit0 | Bit1,
+				Phase2Result = Bit0 | Bit1,
+				Phase3 = Bit0,
+				Phase3Result = Bit0,
+				InvalidPhase3Result = Bit0 | Bit1
+			};
+
+			andCase.Process((x, y) => x.And(y));
+		}
+
+		[Test]
+		public void UIntEnumXorTests()
+		{
+			TestCase xorCase = new()
+			{
+				Initial = Bit0 | Bit1 | Bit6 | Bit31,
+				Phase1 = Bit0 | Bit1 | Bit6,
+				Phase1Result = Bit31,
+				Phase2 = Bit0 | Bit1,
+				Phase2Result = Bit0 | Bit1 | Bit31,
+				Phase3 = Bit0,
+				Phase3Result = Bit1 | Bit31,
+				InvalidPhase3Result = Bit0 | Bit1 | Bit31,
+			};
+
+			xorCase.Process((x, y) => x.Xor(y));
+		}
+
+		[Test]
+		public void UIntEnumNotTests()
+		{
+			UnaryTestCase notCase = new()
+			{
+				Initial = Bit0 | Bit2 | Bit4 | Bit6 | Bit8 | Bit10 | Bit12 | Bit14 | Bit16 | Bit18 | Bit20 | Bit22 | Bit24 | Bit26 | Bit28 | Bit30,
+				Phase1Result = Bit1 | Bit3 | Bit5 | Bit7 | Bit9 | Bit11 | Bit13 | Bit15 | Bit17 | Bit19 | Bit21 | Bit23 | Bit25 | Bit27 | Bit29 | Bit31,
+				Phase2Result = Bit0 | Bit2 | Bit4 | Bit6 | Bit8 | Bit10 | Bit12 | Bit14 | Bit16 | Bit18 | Bit20 | Bit22 | Bit24 | Bit26 | Bit28 | Bit30,
+			};
+
+			notCase.Process(x => x.Not());
+		}
+	}
+}
+
+// IntEnum
+namespace Solar.IL.Tests
+{
+	using static Solar.IL.Tests.IntEnum;
+
+	using TestCase = TestCase<IntEnum>;
+	using UnaryTestCase = UnaryTestCase<IntEnum>;
+
+	partial class FlagEnumUtilTest
+	{
+		[Test]
+		public void IntEnumOrTests()
+		{
+			TestCase orCase = new()
+			{
+				Initial = Bit0 | Bit4,
+				Phase1 = Bit31,
+				Phase1Result = Bit0 | Bit4 | Bit31,
+				Phase2 = Bit0,
+				Phase2Result = Bit0 | Bit4 | Bit31,
+				Phase3 = Bit1,
+				Phase3Result = Bit0 | Bit1 | Bit4 | Bit31,
+				InvalidPhase3Result = Bit0 | Bit4 | Bit31
+			};
+
+			orCase.Process((x, y) => x.Or(y));
+		}
+
+		[Test]
+		public void IntEnumAndTests()
+		{
+			TestCase andCase = new()
+			{
+				Initial = Bit0 | Bit1 | Bit6 | Bit31,
+				Phase1 = Bit0 | Bit1 | Bit6,
+				Phase1Result = Bit0 | Bit1 | Bit6,
+				Phase2 = Bit0 | Bit1,
+				Phase2Result = Bit0 | Bit1,
+				Phase3 = Bit0,
+				Phase3Result = Bit0,
+				InvalidPhase3Result = Bit0 | Bit1
+			};
+
+			andCase.Process((x, y) => x.And(y));
+		}
+
+		[Test]
+		public void IntEnumXorTests()
+		{
+			TestCase xorCase = new()
+			{
+				Initial = Bit0 | Bit1 | Bit6 | Bit31,
+				Phase1 = Bit0 | Bit1 | Bit6,
+				Phase1Result = Bit31,
+				Phase2 = Bit0 | Bit1,
+				Phase2Result = Bit0 | Bit1 | Bit31,
+				Phase3 = Bit0,
+				Phase3Result = Bit1 | Bit31,
+				InvalidPhase3Result = Bit0 | Bit1 | Bit31,
+			};
+
+			xorCase.Process((x, y) => x.Xor(y));
+		}
+
+		[Test]
+		public void IntEnumNotTests()
+		{
+			UnaryTestCase notCase = new()
+			{
+				Initial = Bit0 | Bit2 | Bit4 | Bit6 | Bit8 | Bit10 | Bit12 | Bit14 | Bit16 | Bit18 | Bit20 | Bit22 | Bit24 | Bit26 | Bit28 | Bit30,
+				Phase1Result = Bit1 | Bit3 | Bit5 | Bit7 | Bit9 | Bit11 | Bit13 | Bit15 | Bit17 | Bit19 | Bit21 | Bit23 | Bit25 | Bit27 | Bit29 | Bit31,
+				Phase2Result = Bit0 | Bit2 | Bit4 | Bit6 | Bit8 | Bit10 | Bit12 | Bit14 | Bit16 | Bit18 | Bit20 | Bit22 | Bit24 | Bit26 | Bit28 | Bit30,
+			};
+
+			notCase.Process(x => x.Not());
+		}
+	}
+}
+
+// ULongEnum
+namespace Solar.IL.Tests
+{
+	using static Solar.IL.Tests.ULongEnum;
+
+	using TestCase = TestCase<ULongEnum>;
+	using UnaryTestCase = UnaryTestCase<ULongEnum>;
+
+	partial class FlagEnumUtilTest
+	{
+		[Test]
+		public void ULongEnumOrTests()
+		{
+			TestCase orCase = new()
+			{
+				Initial = Bit0 | Bit4,
+				Phase1 = Bit63,
+				Phase1Result = Bit0 | Bit4 | Bit63,
+				Phase2 = Bit0,
+				Phase2Result = Bit0 | Bit4 | Bit63,
+				Phase3 = Bit1,
+				Phase3Result = Bit0 | Bit1 | Bit4 | Bit63,
+				InvalidPhase3Result = Bit0 | Bit4 | Bit63
+			};
+
+			orCase.Process((x, y) => x.Or(y));
+		}
+
+		[Test]
+		public void ULongEnumAndTests()
+		{
+			TestCase andCase = new()
+			{
+				Initial = Bit0 | Bit1 | Bit6 | Bit63,
+				Phase1 = Bit0 | Bit1 | Bit6,
+				Phase1Result = Bit0 | Bit1 | Bit6,
+				Phase2 = Bit0 | Bit1,
+				Phase2Result = Bit0 | Bit1,
+				Phase3 = Bit0,
+				Phase3Result = Bit0,
+				InvalidPhase3Result = Bit0 | Bit1
+			};
+
+			andCase.Process((x, y) => x.And(y));
+		}
+
+		[Test]
+		public void ULongEnumXorTests()
+		{
+			TestCase xorCase = new()
+			{
+				Initial = Bit0 | Bit1 | Bit6 | Bit63,
+				Phase1 = Bit0 | Bit1 | Bit6,
+				Phase1Result = Bit63,
+				Phase2 = Bit0 | Bit1,
+				Phase2Result = Bit0 | Bit1 | Bit63,
+				Phase3 = Bit0,
+				Phase3Result = Bit1 | Bit63,
+				InvalidPhase3Result = Bit0 | Bit1 | Bit63,
+			};
+
+			xorCase.Process((x, y) => x.Xor(y));
+		}
+
+		[Test]
+		public void ULongEnumNotTests()
+		{
+			UnaryTestCase notCase = new()
+			{
+				Initial = Bit0 | Bit2 | Bit4 | Bit6 | Bit8 | Bit10 | Bit12 | Bit14 | Bit16 | Bit18 | Bit20 | Bit22 | Bit24 | Bit26 | Bit28 | Bit30 | Bit32 | Bit34 | Bit36 | Bit38 | Bit40 | Bit42 | Bit44 | Bit46 | Bit48 | Bit50 | Bit52 | Bit54 | Bit56 | Bit58 | Bit60 | Bit62,
+				Phase1Result = Bit1 | Bit3 | Bit5 | Bit7 | Bit9 | Bit11 | Bit13 | Bit15 | Bit17 | Bit19 | Bit21 | Bit23 | Bit25 | Bit27 | Bit29 | Bit31 | Bit33 | Bit35 | Bit37 | Bit39 | Bit41 | Bit43 | Bit45 | Bit47 | Bit49 | Bit51 | Bit53 | Bit55 | Bit57 | Bit59 | Bit61 | Bit63,
+				Phase2Result = Bit0 | Bit2 | Bit4 | Bit6 | Bit8 | Bit10 | Bit12 | Bit14 | Bit16 | Bit18 | Bit20 | Bit22 | Bit24 | Bit26 | Bit28 | Bit30 | Bit32 | Bit34 | Bit36 | Bit38 | Bit40 | Bit42 | Bit44 | Bit46 | Bit48 | Bit50 | Bit52 | Bit54 | Bit56 | Bit58 | Bit60 | Bit62,
+			};
+
+			notCase.Process(x => x.Not());
+		}
+	}
+}
+
+// LongEnum
+namespace Solar.IL.Tests
+{
+	using static Solar.IL.Tests.LongEnum;
+
+	using TestCase = TestCase<LongEnum>;
+	using UnaryTestCase = UnaryTestCase<LongEnum>;
+
+	partial class FlagEnumUtilTest
+	{
+		[Test]
+		public void LongEnumOrTests()
+		{
+			TestCase orCase = new()
+			{
+				Initial = Bit0 | Bit4,
+				Phase1 = Bit63,
+				Phase1Result = Bit0 | Bit4 | Bit63,
+				Phase2 = Bit0,
+				Phase2Result = Bit0 | Bit4 | Bit63,
+				Phase3 = Bit1,
+				Phase3Result = Bit0 | Bit1 | Bit4 | Bit63,
+				InvalidPhase3Result = Bit0 | Bit4 | Bit63
+			};
+
+			orCase.Process((x, y) => x.Or(y));
+		}
+
+		[Test]
+		public void LongEnumAndTests()
+		{
+			TestCase andCase = new()
+			{
+				Initial = Bit0 | Bit1 | Bit6 | Bit63,
+				Phase1 = Bit0 | Bit1 | Bit6,
+				Phase1Result = Bit0 | Bit1 | Bit6,
+				Phase2 = Bit0 | Bit1,
+				Phase2Result = Bit0 | Bit1,
+				Phase3 = Bit0,
+				Phase3Result = Bit0,
+				InvalidPhase3Result = Bit0 | Bit1
+			};
+
+			andCase.Process((x, y) => x.And(y));
+		}
+
+		[Test]
+		public void LongEnumNotTests()
+		{
+			UnaryTestCase notCase = new()
+			{
+				Initial = Bit0 | Bit2 | Bit4 | Bit6 | Bit8 | Bit10 | Bit12 | Bit14 | Bit16 | Bit18 | Bit20 | Bit22 | Bit24 | Bit26 | Bit28 | Bit30 | Bit32 | Bit34 | Bit36 | Bit38 | Bit40 | Bit42 | Bit44 | Bit46 | Bit48 | Bit50 | Bit52 | Bit54 | Bit56 | Bit58 | Bit60 | Bit62,
+				Phase1Result = Bit1 | Bit3 | Bit5 | Bit7 | Bit9 | Bit11 | Bit13 | Bit15 | Bit17 | Bit19 | Bit21 | Bit23 | Bit25 | Bit27 | Bit29 | Bit31 | Bit33 | Bit35 | Bit37 | Bit39 | Bit41 | Bit43 | Bit45 | Bit47 | Bit49 | Bit51 | Bit53 | Bit55 | Bit57 | Bit59 | Bit61 | Bit63,
+				Phase2Result = Bit0 | Bit2 | Bit4 | Bit6 | Bit8 | Bit10 | Bit12 | Bit14 | Bit16 | Bit18 | Bit20 | Bit22 | Bit24 | Bit26 | Bit28 | Bit30 | Bit32 | Bit34 | Bit36 | Bit38 | Bit40 | Bit42 | Bit44 | Bit46 | Bit48 | Bit50 | Bit52 | Bit54 | Bit56 | Bit58 | Bit60 | Bit62,
+			};
+
+			notCase.Process(x => x.Not());
+		}
+	}
+}
+
+namespace Solar.IL.Tests
+{
+	public sealed class TestCase<T>
+	{
+		public T Initial;
+		public T Phase1;
+		public T Phase1Result;
+		public T Phase2;
+		public T Phase2Result;
+		public T Phase3;
+		public T Phase3Result;
+		public T InvalidPhase3Result;
+
+
+		public void Process(Func<T, T, T> testFunc)
+		{
+			var value = Initial;
+			value = testFunc(value, Phase1);
+			Assert.AreEqual(Phase1Result, value);
+			value = testFunc(value, Phase2);
+			Assert.AreEqual(Phase2Result, value);
+		}
+	}
+
+	public sealed class UnaryTestCase<T>
+	{
+		public T Initial;
+		public T Phase1Result;
+		public T Phase2Result;
+
+		public void Process(Func<T,T> testFunc)
+		{
+			var value = Initial;
+			value = testFunc(value);
+			Assert.AreEqual(Phase1Result, value);
+			value = testFunc(value);
+			Assert.AreEqual(Phase2Result, value);
+		}
+	}
 
 	[Flags]
 	public enum ByteEnum

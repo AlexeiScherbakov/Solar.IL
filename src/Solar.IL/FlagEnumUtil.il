@@ -40,6 +40,36 @@
     }
 
     .method public hidebysig static !!0/*TEnum*/
+        Xor<valuetype .ctor (class [CORE_ASSEMBLY]System.Enum, class [CORE_ASSEMBLY]System.ValueType) TEnum>(
+            !!0/*TEnum*/ this,
+            !!0/*TEnum*/ 'value'
+        ) cil managed
+    {
+        .custom instance void [CORE_ASSEMBLY]System.Runtime.CompilerServices.ExtensionAttribute::.ctor()
+         = (01 00 00 00 )
+        .maxstack 2
+
+        ldarg.0
+        ldarg.1
+        xor
+        ret
+    }
+
+    .method public hidebysig static !!0/*TEnum*/
+        Not<valuetype .ctor (class [CORE_ASSEMBLY]System.Enum, class [CORE_ASSEMBLY]System.ValueType) TEnum>(
+            !!0/*TEnum*/ this
+        ) cil managed
+    {
+        .custom instance void [CORE_ASSEMBLY]System.Runtime.CompilerServices.ExtensionAttribute::.ctor()
+         = (01 00 00 00 )
+        .maxstack 2
+
+        ldarg.0
+        not
+        ret
+    }
+
+    .method public hidebysig static !!0/*TEnum*/
         ClearFlags<valuetype .ctor (class [CORE_ASSEMBLY]System.Enum, class [CORE_ASSEMBLY]System.ValueType) TEnum>(
             !!0/*TEnum*/ this,
             !!0/*TEnum*/ 'value'

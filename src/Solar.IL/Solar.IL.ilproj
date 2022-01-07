@@ -12,6 +12,7 @@
 		<Version>1.0.0-beta.1</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<DocumentationFile>$(MSBuildThisFileDirectory)Solar.IL.xml</DocumentationFile>
+		<RepositoryUrl>https://github.com/AlexeiScherbakov/Solar.IL</RepositoryUrl>
 	</PropertyGroup>
 	<PropertyGroup Condition="$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETCoreApp'">
 		<ExtraMacros>#define netcoreapp</ExtraMacros>
