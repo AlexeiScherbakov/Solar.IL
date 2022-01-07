@@ -6,13 +6,15 @@
 		<CoreCompileDependsOn>$(CoreCompileDependsOn);GenerateVersionFile</CoreCompileDependsOn>
 		<IlasmFlags>$(IlasmFlags) -DEBUG=$(DebugOptimization)</IlasmFlags>
 		<IsPackable>true</IsPackable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
 		<FileVersion>1.0.0.0</FileVersion>
-		<Version>1.0.0-beta.1</Version>
+		<Version>1.0.0-beta.2</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<DocumentationFile>$(MSBuildThisFileDirectory)Solar.IL.xml</DocumentationFile>
 		<RepositoryUrl>https://github.com/AlexeiScherbakov/Solar.IL</RepositoryUrl>
+		<Authors>Alexei Shcherbakov</Authors>
 	</PropertyGroup>
 	<PropertyGroup Condition="$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETCoreApp'">
 		<ExtraMacros>#define netcoreapp</ExtraMacros>
@@ -43,6 +45,9 @@
 	<PropertyGroup Condition="'$(_FeaturePublicSign)'!='true'">
 		<AssemblyOriginatorKeyFile>..\solar.snk</AssemblyOriginatorKeyFile>
 		<DelaySign>false</DelaySign>
+		<!--.NET Core ilasm not working for it https://github.com/dotnet/runtime/issues/12132-->
+		<ILAsmToolPath>C:\Windows\Microsoft.NET\Framework\v4.0.30319\</ILAsmToolPath>
+		<SignAssembly>true</SignAssembly>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(_FeatureUsePopCount)'=='true'">
