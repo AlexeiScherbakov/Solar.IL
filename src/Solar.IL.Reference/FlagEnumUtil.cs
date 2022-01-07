@@ -56,6 +56,12 @@ namespace Solar
 			throw new NotImplementedException();
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+		public static bool HasFlags(this int @this, int flags)
+		{
+			return (@this & flags) == flags;
+		}
+
 		public static int BitCountTest( long op3,ulong op4)
 		{
 			var i1 = BitOperations.PopCount((ulong)op3);

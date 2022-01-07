@@ -10,7 +10,7 @@
 		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
 		<FileVersion>1.0.0.0</FileVersion>
-		<Version>1.0.0-beta.3</Version>
+		<Version>1.0.0-beta.4</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<DocumentationFile>$(MSBuildThisFileDirectory)Solar.IL.xml</DocumentationFile>
 		<RepositoryUrl>https://github.com/AlexeiScherbakov/Solar.IL</RepositoryUrl>
@@ -45,6 +45,7 @@
 	<PropertyGroup Condition="'$(_FeaturePublicSign)'=='true'">
 		<AssemblyOriginatorKeyFile>..\solar_pub.snk</AssemblyOriginatorKeyFile>
 		<PublicSign>True</PublicSign>
+		<SignAssembly>true</SignAssembly>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(_FeaturePublicSign)'!='true'">

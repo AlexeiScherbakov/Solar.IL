@@ -78,6 +78,15 @@ namespace Solar.IL.Tests
 				Assert.AreEqual(i + 1, enumInt64.FlagCount());
 			}
 		}
+
+		[Test]
+		public void HasFlagsTest()
+		{
+			Assert.IsTrue((ByteEnum.Bit2 | ByteEnum.Bit3 | ByteEnum.Bit7).HasFlags(ByteEnum.Bit3 | ByteEnum.Bit7));
+			Assert.IsTrue((SByteEnum.Bit2 | SByteEnum.Bit3 | SByteEnum.Bit7).HasFlags(SByteEnum.Bit3 | SByteEnum.Bit7));
+
+			Assert.IsFalse((ByteEnum.Bit2 | ByteEnum.Bit3 | ByteEnum.Bit7).HasFlags(ByteEnum.Bit3 | ByteEnum.Bit1));
+		}
 	}
 }
 
