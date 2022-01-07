@@ -10,11 +10,16 @@
 		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
 		<FileVersion>1.0.0.0</FileVersion>
-		<Version>1.0.0-beta.2</Version>
+		<Version>1.0.0-beta.3</Version>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<DocumentationFile>$(MSBuildThisFileDirectory)Solar.IL.xml</DocumentationFile>
 		<RepositoryUrl>https://github.com/AlexeiScherbakov/Solar.IL</RepositoryUrl>
 		<Authors>Alexei Shcherbakov</Authors>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Title>Solar.IL</Title>
+		<Description>IL Assembly Library</Description>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<Copyright>Copyright © Alexei Shcherbakov 2021</Copyright>
 	</PropertyGroup>
 	<PropertyGroup Condition="$([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETCoreApp'">
 		<ExtraMacros>#define netcoreapp</ExtraMacros>
@@ -57,6 +62,9 @@
 		<Compile Include="FlagEnumUtil.NoPopCount.msil"/>		
 	</ItemGroup>
 	
+	<ItemGroup>
+    	<None Include="README.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
 
 	<ItemGroup>
 		<!-- mscorlib is passed in as an explicit reference from C# targets but not via the IL SDK. -->
